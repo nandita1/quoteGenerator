@@ -4,9 +4,9 @@
       <p class="quotation-mark">“</p>
       <p class="quote-text">{{ quote.en }}</p>
       <hr />
-      <div class="blog-post-actions">
-        <p class="blog-post-bottom pull-left">{{ quote.author }}</p>
-        <p class="blog-post-bottom pull-right">
+      <div>
+        <p class="pull-left">{{ quote.author }}</p>
+        <p class="pull-right">
           <i
             class="fa fa-star-o"
             @click="check(0)"
