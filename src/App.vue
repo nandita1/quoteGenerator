@@ -8,34 +8,12 @@
         <p class="pull-left">{{ quote.author }}</p>
         <p class="pull-right">
           <i
+            v-for="(checkedItem, index) in checked"
             class="fa fa-star-o"
-            @click="check(0)"
-            :class="checked[0] ? 'checked' : ''"
+            @click="check(index)"
+            :class="checkedItem ? 'checked' : ''"
             aria-hidden="true"
-          ></i>
-          <i
-            class="fa fa-star-o"
-            @click="check(1)"
-            :class="checked[1] ? 'checked' : ''"
-            aria-hidden="true"
-          ></i>
-          <i
-            class="fa fa-star-o"
-            @click="check(2)"
-            :class="checked[2] ? 'checked' : ''"
-            aria-hidden="true"
-          ></i>
-          <i
-            @click="check(3)"
-            class="fa fa-star-o"
-            :class="checked[3] ? 'checked' : ''"
-            aria-hidden="true"
-          ></i>
-          <i
-            @click="check(4)"
-            class="fa fa-star-o"
-            :class="checked[4] ? 'checked' : ''"
-            aria-hidden="true"
+            :key="index"
           ></i>
         </p>
       </div>
@@ -76,36 +54,36 @@ export default {
         body: JSON.stringify({ quoteId: this.quote.id, newVote: i })
       }).then(response => {
         console.log(response);
-        if (i >= 3) {
-          var new_quotes = [...this.quotes];
-          new_quotes.splice(this.indexOfQuote, 1);
-          var matches = stringSimilarity.findBestMatch(
-            this.quote.en,
-            new_quotes.map(a => a.en)
-          );
-          console.log(matches);
-          this.quote = this.quotes.find(obj => {
-            return obj.en === matches.bestMatch.target;
-          });
-          this.indexOfQuote = this.quotes.findIndex(obj => {
-            return obj.en === matches.bestMatch.target;
-          });
-          let checked = [false, false, false, false, false];
-          for (let j = 0; j < Math.round(parseInt(this.quote.rating)); j++) {
-            checked[j] = true;
-          }
-          this.checked = [...checked];
-        } else {
-          var random = Math.floor(Math.random() * this.quotes.length);
-          this.quote = this.quotes[random];
-          this.indexOfQuote = random;
-          let checked = [false, false, false, false, false];
-          for (let j = 0; j < Math.round(parseInt(this.quote.rating)); j++) {
-            checked[j] = true;
-          }
-          this.checked = [...checked];
-        }
       });
+      if (i >= 3) {
+        var new_quotes = [...this.quotes];
+        new_quotes.splice(this.indexOfQuote, 1);
+        var matches = stringSimilarity.findBestMatch(
+          this.quote.en,
+          new_quotes.map(a => a.en)
+        );
+        console.log(matches);
+        this.quote = this.quotes.find(obj => {
+          return obj.en === matches.bestMatch.target;
+        });
+        this.indexOfQuote = this.quotes.findIndex(obj => {
+          return obj.en === matches.bestMatch.target;
+        });
+        let checked = [false, false, false, false, false];
+        for (let j = 0; j < Math.round(parseInt(this.quote.rating)); j++) {
+          checked[j] = true;
+        }
+        this.checked = [...checked];
+      } else {
+        var random = Math.floor(Math.random() * this.quotes.length);
+        this.quote = this.quotes[random];
+        this.indexOfQuote = random;
+        let checked = [false, false, false, false, false];
+        for (let j = 0; j < Math.round(parseInt(this.quote.rating)); j++) {
+          checked[j] = true;
+        }
+        this.checked = [...checked];
+      }
     }
   }
 };
